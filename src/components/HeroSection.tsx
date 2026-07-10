@@ -1,8 +1,17 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
+
+import screenshot1 from "@/app/assets/screenshot-1.jpg";
+import screenshot2 from "@/app/assets/screenshot-2.jpg";
+import screenshot3 from "@/app/assets/screenshot-3.jpeg";
+import screenshot4 from "@/app/assets/screenshot-4.jpeg";
+import screenshot5 from "@/app/assets/screenshot-5.jpeg";
+import screenshot6 from "@/app/assets/screenshot-6.jpeg";
+import bgImage from "@/app/assets/bg.jpeg";
 
 function Firefly({ delay, x, y }: { delay: number; x: string; y: string }) {
   return (
@@ -24,6 +33,23 @@ function Firefly({ delay, x, y }: { delay: number; x: string; y: string }) {
 }
 
 export default function HeroSection() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const screenshots = [
+    screenshot1,
+    screenshot2,
+    screenshot3,
+    screenshot4,
+    screenshot5,
+    screenshot6,
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % screenshots.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [screenshots.length]);
+
   const fireflies = [
     { delay: 0, x: "10%", y: "20%" },
     { delay: 1.5, x: "85%", y: "15%" },
@@ -37,8 +63,17 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background-dark via-background-dark to-background-light" />
+      {/* Background Image & Overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={bgImage}
+          alt="Magical bedtime background"
+          fill
+          className="object-cover opacity-60 mix-blend-luminosity"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background-dark/90 via-background-dark/60 to-background-light" />
+      </div>
 
       {/* Radial glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary-gold/[0.03] blur-[120px]" />
@@ -125,17 +160,26 @@ export default function HeroSection() {
                 {/* Camera dot */}
                 <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-2 h-2 bg-background-dark/80 rounded-full border border-white/10 z-10" />
 
-                {/* Screen content — app screenshot */}
+                {/* Screen content — app screenshots with crossfade */}
                 <div className="absolute inset-2.5 sm:inset-3 rounded-[14px] sm:rounded-[18px] overflow-hidden bg-background-light">
-                  <Image
-                    src="/app-screenshot.jpg"
-                    alt="Pillow Tales app showing beautiful bedtime story illustrations"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                  {screenshots.map((img, index) => (
+                    <div
+                      key={index}
+                      className={`absolute inset-0 transition-opacity duration-1000 ${
+                        index === currentImageIndex ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <Image
+                        src={img}
+                        alt={`Pillow Tales app screenshot ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        priority={index === 0}
+                      />
+                    </div>
+                  ))}
                   {/* Overlay gradient for polish */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background-dark/30 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background-dark/30 via-transparent to-transparent pointer-events-none" />
                 </div>
               </div>
 
