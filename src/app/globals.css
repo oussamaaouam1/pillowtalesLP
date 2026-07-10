@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme inline {
+  --color-background-dark: #0a0f24;
+  --color-background-light: #152042;
+  --color-primary-gold: #F4D06F;
+  --color-primary-gold-dark: #d4a843;
+  --color-text-main: #F8F9FA;
+  --color-text-muted: #94A3B8;
+  --color-glass: rgba(21, 32, 66, 0.6);
+  --color-glass-border: rgba(244, 208, 111, 0.15);
+
+  --font-sans: 'Nunito', system-ui, sans-serif;
+
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.6s ease-out forwards;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(244, 208, 111, 0.15); }
+    50% { box-shadow: 0 0 40px rgba(244, 208, 111, 0.3); }
+  }
+
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+}
+
+/* ── Base Styles ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background-dark);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: rgba(244, 208, 111, 0.3);
+  color: var(--color-text-main);
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 208, 111, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(244, 208, 111, 0.5);
+}
+
+/* ── Glassmorphism Utility ── */
+.glass {
+  background: var(--color-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+}
+
+/* ── Gradient Text Utility ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary-gold), #ffe4a0, var(--color-primary-gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Glow Card Hover ── */
+.glow-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-card:hover {
+  box-shadow: 0 0 30px rgba(244, 208, 111, 0.15), 0 0 60px rgba(244, 208, 111, 0.05);
+  border-color: rgba(244, 208, 111, 0.3);
+  transform: translateY(-4px);
+}
+
+/* ── Phone Mockup ── */
+.phone-mockup {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border: 3px solid rgba(244, 208, 111, 0.2);
+  border-radius: 40px;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(244, 208, 111, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ── Prose Overrides for Compliance Pages ── */
+.prose-pillow {
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+.prose-pillow h1,
+.prose-pillow h2,
+.prose-pillow h3 {
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.prose-pillow h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+.prose-pillow h2 {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(244, 208, 111, 0.15);
+}
+
+.prose-pillow h3 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-pillow p {
+  margin-bottom: 1rem;
+}
+
+.prose-pillow ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-pillow li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-pillow a {
+  color: var(--color-primary-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-pillow strong {
+  color: var(--color-text-main);
+}
