@@ -42,22 +42,60 @@ export async function submitSupportForm(formData: FormData) {
   };
 }
 
-export async function submitDeleteAccount(formData: FormData) {
+export async function requestDeletionOTP(formData: FormData) {
   const email = formData.get("email") as string;
+  const reason = formData.get("reason") as string;
 
   if (!email || !email.includes("@")) {
-    return {
-      success: false,
-      message: "Please enter a valid email address.",
-    };
+    return { success: false, message: "Please enter a valid email address." };
   }
 
-  // Mock API call
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-  console.log(`[Delete Account] Request for: ${email}`);
+  const url = `${process.env.CONVEX_SITE_URL}/delete-account/request-otp`;
 
-  return {
-    success: true,
-    message: "A deletion confirmation has been sent to your email.",
-  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, reason }),
+    });
+
+    if (response.ok) {
+      return { success: true, message: "A verification code has been sent to your email." };
+    } else if (response.status === 404) {
+      return { success: false, message: "No active account was found with that email." };
+    } else {
+      return { success: false, message: "An error occurred. Please try again." };
+    }
+  } catch (error) {
+    return { success: false, message: "Failed to connect to the server." };
+  }
+}
+
+export async function verifyDeletionOTP(formData: FormData) {
+  const email = formData.get("email") as string;
+  const otp = formData.get("otp") as string;
+
+  if (!otp || otp.length !== 6) {
+    return { success: false, message: "Please enter the 6-digit code." };
+  }
+
+  const url = `${process.env.CONVEX_SITE_URL}/delete-account/verify-otp`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp }),
+    });
+
+    if (response.ok) {
+      return { success: true, message: "Your account and all associated data have been permanently deleted." };
+    } else if (response.status === 401) {
+      return { success: false, message: "Invalid or expired verification code." };
+    } else {
+      return { success: false, message: "An error occurred. Please try again." };
+    }
+  } catch (error) {
+    return { success: false, message: "Failed to connect to the server." };
+  }
 }
