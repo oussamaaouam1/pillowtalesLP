@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
 import screenshot1 from "@/app/assets/screenshot-1.jpg";
@@ -34,6 +34,8 @@ function Firefly({ delay, x, y }: { delay: number; x: string; y: string }) {
 
 export default function HeroSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
   const screenshots = [
     screenshot1,
     screenshot2,
@@ -49,6 +51,14 @@ export default function HeroSection() {
     }, 4000);
     return () => clearInterval(interval);
   }, [screenshots.length]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const fireflies = [
     { delay: 0, x: "10%", y: "20%" },
@@ -192,6 +202,27 @@ export default function HeroSection() {
 
       {/* Bottom fade into next section */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background-light to-transparent" />
+
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none z-20"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: hasScrolled ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <span className="text-xs font-bold text-text-muted/80 uppercase tracking-[0.2em] mb-2">
+          Scroll
+        </span>
+        <motion.div
+          className="flex flex-col items-center -space-y-5"
+          animate={{ y: [0, 12, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-10 h-10 text-primary-gold/40" />
+          <ChevronDown className="w-10 h-10 text-primary-gold/70" />
+          <ChevronDown className="w-10 h-10 text-primary-gold" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
