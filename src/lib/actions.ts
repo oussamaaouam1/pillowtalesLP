@@ -10,14 +10,26 @@ export async function submitWaitlistEmail(formData: FormData) {
     };
   }
 
-  // Mock API call — replace with Resend/Mailchimp integration
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`[Waitlist] New signup: ${email}`);
+  const url = `${process.env.CONVEX_SITE_URL}/waitlist/join`;
 
-  return {
-    success: true,
-    message: "You're on the list! We'll notify you when Pillow Tales launches. ✨",
-  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (response.ok) {
+      return {
+        success: true,
+        message: "You're on the list! We'll notify you when Pillow Tales launches. ✨",
+      };
+    } else {
+      return { success: false, message: "An error occurred. Please try again." };
+    }
+  } catch (error) {
+    return { success: false, message: "Failed to connect to the server." };
+  }
 }
 
 export async function submitSupportForm(formData: FormData) {
@@ -32,14 +44,26 @@ export async function submitSupportForm(formData: FormData) {
     };
   }
 
-  // Mock API call
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log(`[Support] From: ${name} <${email}> — ${message}`);
+  const url = `${process.env.CONVEX_SITE_URL}/support/submit`;
 
-  return {
-    success: true,
-    message: "Thank you! We've received your message and will get back to you within 48 hours.",
-  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    });
+
+    if (response.ok) {
+      return {
+        success: true,
+        message: "Thank you! We've received your message and will get back to you within 48 hours.",
+      };
+    } else {
+      return { success: false, message: "An error occurred. Please try again." };
+    }
+  } catch (error) {
+    return { success: false, message: "Failed to connect to the server." };
+  }
 }
 
 export async function requestDeletionOTP(formData: FormData) {
