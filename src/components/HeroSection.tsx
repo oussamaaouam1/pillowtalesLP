@@ -128,7 +128,9 @@ export default function HeroSection() {
             {/* App Store Badges */}
             <div className="flex flex-wrap gap-4 mt-2">
               <motion.a
-                href="#"
+                href="https://apps.apple.com/app/id6791546981"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-text-main text-background-dark font-semibold text-sm transition-shadow hover:shadow-lg hover:shadow-primary-gold/20"
@@ -139,7 +141,9 @@ export default function HeroSection() {
                 Download on App Store
               </motion.a>
               <motion.a
-                href="#"
+                href="https://play.google.com/store/apps/details?id=com.motkan.pillowtales"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center gap-3 px-6 py-3 rounded-xl border border-glass-border text-text-main font-semibold text-sm glass transition-shadow hover:shadow-lg hover:shadow-primary-gold/10"
